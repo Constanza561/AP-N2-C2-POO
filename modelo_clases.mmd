@@ -1,0 +1,206 @@
+classDiagram
+    class BaseModel {
+        <<base>>
+        +guardar() BaseModel
+        +eliminar() int
+        +existe() bool
+        +nombre_tabla() str
+    }
+
+    class Propietario {
+        +int id_propietario
+        +str rut
+        +str nombre
+        +str telefono
+        +str correo
+        +bool habilitado
+        +validar() bool
+        +actualizar_contacto(telefono, correo) Propietario
+        +activar() Propietario
+        +desactivar() Propietario
+        +resumen() str
+    }
+
+    class Marca {
+        +int id_marca
+        +str nombre
+        +bool habilitado
+        +validar() bool
+        +renombrar(nombre) Marca
+        +activar() Marca
+        +desactivar() Marca
+        +resumen() str
+    }
+
+    class ModeloVehiculo {
+        +int id_modelo
+        +str nombre
+        +bool habilitado
+        +validar() bool
+        +renombrar(nombre) ModeloVehiculo
+        +activar() ModeloVehiculo
+        +desactivar() ModeloVehiculo
+        +resumen() str
+    }
+
+    class TipoVehiculo {
+        +int id_tipo_vehiculo
+        +str nombre
+        +bool habilitado
+        +validar() bool
+        +renombrar(nombre) TipoVehiculo
+        +activar() TipoVehiculo
+        +desactivar() TipoVehiculo
+        +resumen() str
+    }
+
+    class Vehiculo {
+        +int id_vehiculo
+        +str patente
+        +str vin
+        +int anio
+        +str color
+        +int kilometraje
+        +str estado
+        +validar() bool
+        +actualizar_kilometraje(kilometraje) Vehiculo
+        +iniciar_mantencion() Vehiculo
+        +finalizar_mantencion() Vehiculo
+        +esta_disponible() bool
+        +identificacion() str
+    }
+
+    class Taller {
+        +int id_taller
+        +str nombre
+        +str direccion
+        +str telefono
+        +bool habilitado
+        +validar() bool
+        +activar() Taller
+        +desactivar() Taller
+        +actualizar_contacto(direccion, telefono) Taller
+        +ficha() str
+    }
+
+    class Mecanico {
+        +int id_mecanico
+        +str rut
+        +str nombre
+        +str especialidad
+        +bool habilitado
+        +validar() bool
+        +activar() Mecanico
+        +desactivar() Mecanico
+        +cambiar_especialidad(especialidad) Mecanico
+        +ficha() str
+    }
+
+    class TipoMantencion {
+        +int id_tipo_mantencion
+        +str nombre
+        +str descripcion
+        +int intervalo_km
+        +int intervalo_meses
+        +bool habilitado
+        +validar() bool
+        +requiere_programacion() bool
+        +actualizar_intervalos(kilometros, meses) TipoMantencion
+        +activar() TipoMantencion
+        +desactivar() TipoMantencion
+        +resumen() str
+    }
+
+    class Mantencion {
+        +int id_mantencion
+        +date fecha_ingreso
+        +str tipo_trabajo
+        +int kilometraje
+        +str observaciones
+        +decimal costo_mano_obra
+        +decimal costo_repuestos
+        +decimal costo_total
+        +str estado
+        +validar() bool
+        +calcular_costo_total() decimal
+        +completar() Mantencion
+        +cancelar(motivo) Mantencion
+        +resumen() str
+    }
+
+    class Repuesto {
+        +int id_repuesto
+        +str codigo
+        +str nombre
+        +int stock
+        +decimal precio_unitario
+        +bool habilitado
+        +validar() bool
+        +actualizar_stock(cantidad) Repuesto
+        +retirar_stock(cantidad) Repuesto
+        +ingresar_stock(cantidad) Repuesto
+        +subtotal(cantidad) decimal
+    }
+
+    class MantencionRepuesto {
+        +int id_mantencion_repuesto
+        +int cantidad
+        +decimal precio_unitario
+        +validar() bool
+        +calcular_subtotal() decimal
+        +cambiar_cantidad(cantidad) MantencionRepuesto
+        +cambiar_precio(precio) MantencionRepuesto
+        +resumen() str
+    }
+
+    class TrabajoMantencion {
+        <<abstract>>
+        -decimal costo_mano_obra
+        -decimal costo_repuestos
+        +validar_costos() bool
+        +subtotal() decimal
+        +calcular_costo()* decimal
+        +requiere_diagnostico()* bool
+        +resumen() str
+    }
+
+    class MantencionPreventiva {
+        +calcular_costo() decimal
+        +requiere_diagnostico() bool
+        +es_programable() bool
+        +resumen() str
+    }
+
+    class Reparacion {
+        -decimal costo_diagnostico
+        +validar_costos() bool
+        +calcular_costo() decimal
+        +requiere_diagnostico() bool
+        +es_programable() bool
+        +resumen() str
+    }
+
+    BaseModel <|-- Propietario
+    BaseModel <|-- Marca
+    BaseModel <|-- ModeloVehiculo
+    BaseModel <|-- TipoVehiculo
+    BaseModel <|-- Vehiculo
+    BaseModel <|-- Taller
+    BaseModel <|-- Mecanico
+    BaseModel <|-- TipoMantencion
+    BaseModel <|-- Mantencion
+    BaseModel <|-- Repuesto
+    BaseModel <|-- MantencionRepuesto
+
+    Propietario "1" --> "0..*" Vehiculo : posee
+    Marca "1" --> "0..*" ModeloVehiculo : agrupa
+    ModeloVehiculo "1" --> "0..*" Vehiculo : identifica
+    TipoVehiculo "1" --> "0..*" Vehiculo : clasifica
+    Vehiculo "1" --> "0..*" Mantencion : registra
+    Taller "1" --> "0..*" Mantencion : realiza
+    Taller "1" --> "0..*" Mecanico : emplea
+    TipoMantencion "1" --> "0..*" Mantencion : clasifica
+    Mantencion "1" --> "0..*" MantencionRepuesto : incluye
+    Repuesto "1" --> "0..*" MantencionRepuesto : utilizado
+    TrabajoMantencion <|-- MantencionPreventiva
+    TrabajoMantencion <|-- Reparacion
