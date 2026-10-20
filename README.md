@@ -33,7 +33,7 @@ control_vehiculos_eval2/
 ├── presentacion/
 ├── tests/
 ├── requirements.txt
-├── .env                 # Configuración local de ejemplo; no se publica
+├── .env                 
 └── .env.example
 ```
 
@@ -78,21 +78,6 @@ Instala las dependencias:
 python -m pip install -r requirements.txt
 ```
 
-## Configuración de MySQL
-
-En MySQL Workbench, ejecuta `datos/sql/01_esquema_mysql.sql`. Este script crea
-la base de datos `control_vehiculos`. La cuenta definida en `.env` debe tener
-permisos para crear tablas dentro de esa base.
-
-Edita `.env` con el nombre de la base, servidor, puerto, usuario y contraseña de
-tu MySQL local. No reemplaces esta configuración por SQLite: el proyecto está
-preparado para MySQL, como el ejemplo utilizado en clases.
-
-La primera ejecución crea las tablas mediante Peewee y carga datos de
-demostración si aún no existen. También está disponible
-`datos/sql/02_datos_demo.sql` para estudiar o ejecutar las inserciones
-manualmente; no es necesario ejecutarlo si inicias la aplicación, porque el
-programa carga los registros iniciales.
 
 ## Ejecutar el menú
 
@@ -124,13 +109,7 @@ Las pruebas de validación y cálculo de costos no requieren conectarse a MySQL:
 python -m pytest -q
 ```
 
-## Entorno y archivos sensibles
 
-`.venv` es el entorno virtual local y se crea en cada computador. `.env.example`
-es la plantilla compartible. `.env` contiene la configuración local y está
-excluido por `.gitignore`; no se deben publicar contraseñas reales. El `.env`
-incluido en el ZIP contiene solo valores de ejemplo y requiere configuración
-antes de conectar.
 
 ## GitHub
 
